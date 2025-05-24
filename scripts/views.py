@@ -1,8 +1,35 @@
-from scripts.main import app, db
+from scripts.main import app, db, generate_token, requires_jwt, USERNAME, PASSWORD
 from scripts.models import Name
 from flask import abort, request, jsonify
 
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({'error': 'Bad Request', 'message': str(error)}), 400
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return jsonify({'error': 'Unauthorized', 'message': str(error)}), 401
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Not Found', 'message': str(error)}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error': 'Internal Server Error', 'message': str(error)}), 500
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    if username == USERNAME and password == PASSWORD:
+        token = generate_token(username)
+        return jsonify({'Authorization': 'Bearer '+token})
+    return jsonify({'error': 'Invalid credentials'}), 401
+
 @app.route('/name', methods=['POST'])
+@requires_jwt
 def create_name():
     data = request.get_json()
     if not data:
@@ -30,6 +57,7 @@ def create_name():
     }), 201
 
 @app.route('/name', methods=['GET'])
+@requires_jwt
 def read_names():
     page = request.args.get('page', 1, type=int)
     per_page = 5
@@ -48,6 +76,7 @@ def read_names():
     }), 200
 
 @app.route('/name/<int:name_id>', methods=['PUT'])
+@requires_jwt
 def update_name(name_id):
     name = db.session.get(Name, name_id)
     if not name:
@@ -75,6 +104,7 @@ def update_name(name_id):
     }), 200
 
 @app.route('/name/<int:name_id>', methods=['DELETE'])
+@requires_jwt
 def delete_name(name_id):
     name = db.session.get(Name, name_id)
     if not name:
