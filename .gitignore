@@ -1,0 +1,8 @@
+# ignora a pasta de ambiente virtual
+/venv
+
+# ignora o pycache
+/scripts/__pycache__
+
+# ignora scripts de adição de dados
+/append
