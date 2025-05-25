@@ -5,8 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from datetime import datetime, timedelta, UTC
 
-USERNAME = 'Arielly'
-PASSWORD = 'the_most_beautiful_girl_in_the_whole_fucking_world14/12/22'
+USERNAME = 'admin'
+PASSWORD = 'admin123'
 SECRET_KEY = 'ILgZzD9niA;b2bf'
 
 def generate_token(username):
