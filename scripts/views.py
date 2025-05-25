@@ -1,5 +1,5 @@
-from scripts.main import app, db, generate_token, requires_jwt, USERNAME, PASSWORD
-from scripts.models import Name
+from scripts.main import *
+from scripts.models import *
 from flask import abort, request, jsonify
 
 @app.errorhandler(400)
