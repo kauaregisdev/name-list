@@ -112,10 +112,3 @@ def delete_name(name_id):
     db.session.delete(name)
     db.session.commit()
     return ('', 204)
-
-@app.route('/strawberry', methods=['GET'])
-@requires_jwt
-def my_love():
-    return jsonify({
-        'message': 'Eu te amo, meu amor. Desculpa por todas as vezes que não fui tão compreensivo com você. Quero assumir um compromisso contigo de nunca mais agir rude com você. Você é uma garota incrível que Deus colocou na minha vida, e por isso quero honrar o nosso amor. Eu amo você, meu moranguinho. <3'
-    })
